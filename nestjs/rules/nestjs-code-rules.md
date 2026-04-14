@@ -32,9 +32,10 @@
 
 ## Architecture
 
-- Do not export services directly from domain modules — this creates tight coupling. Use shared "domain lib" modules for cross-domain logic.
+- Do not export services directly from domain modules — this creates tight coupling. Use shared "domain lib" modules under `src/libs/` for cross-domain logic.
 - Separate domain code (`/domain/user`, `/domain/patient`) from infrastructure (`/infrastructure/auth`, `/infrastructure/bullmq`).
 - Each domain gets its own module — do not bundle multiple domains into one module.
+- Keep all backend libraries inside the app (`src/libs/`). Only extract to an Nx workspace library when multiple backend apps share the same code. Assume a monolith by default.
 
 ## Code Structure
 

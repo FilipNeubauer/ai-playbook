@@ -10,6 +10,20 @@ Rules that apply across all stacks and projects.
 
 <!-- Add your PR format, review expectations, etc. -->
 
+## Code Clarity
+
+Write code so obvious that a junior developer can understand it without comments.
+
+- If you need a comment to explain *what* code does, rewrite the code instead. Comments explain *why*, never *what*.
+- One thing per function. If the function name needs "and" in it, split it.
+- No clever tricks, no one-liners that save a line but cost a minute to read. Boring code is good code.
+- Name variables and functions for what they are/do — `getRemainingAttempts()` not `calc()`, `isExpired` not `flag`.
+- No abbreviations in names unless universally known (`id`, `url`, `db`). Write `patient` not `pt`, `message` not `msg`.
+- Keep functions short — if you can't see the whole function on screen, it's too long.
+- Extract magic numbers and strings into named constants.
+- Prefer early returns over deeply nested `if/else` chains.
+- Avoid negated boolean names — use `isActive` not `isNotDisabled`.
+
 ## Code Quality
 
 <!-- Add linting, formatting, general code style rules -->

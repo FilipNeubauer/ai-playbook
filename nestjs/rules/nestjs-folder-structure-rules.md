@@ -139,9 +139,11 @@ Cross-cutting concerns, not business logic. Each concern gets its own module.
 
 Add new infrastructure modules as needed (e.g., `cache/`, `storage/`, `webhook/`). Each follows the same pattern: a module file plus internal organization by concern.
 
-### App-Specific Libraries (`libs/`)
+### App-Internal Libraries (`libs/`)
 
-Standalone importable modules that share logic across domain modules without cross-domain coupling.
+Libraries that live **inside the backend app** (`src/libs/`) for sharing logic across domain modules within a single monolith. These are **not** Nx libraries — they are plain TypeScript modules co-located with the app code.
+
+Only extract code into an **Nx library** (under the workspace `libs/` directory) when multiple backend apps in the monorepo need to share it. For a single backend, keep everything inside the app.
 
 #### Drizzle (`libs/drizzle/`)
 
@@ -189,6 +191,7 @@ All file names use **kebab-case**. The suffix indicates the file's role:
 - **Types go in `types/`.** Do not define TypeScript interfaces or type aliases in service, resolver, or controller files. Move them to a dedicated `types/` file.
 - **Utils are pure functions.** No NestJS decorators, no injected dependencies. If it needs DI, it is a service.
 - **Create folders only when needed.** If a domain has no processors, do not create a `processors/` directory. Add it when the first processor is needed.
-- **Domain modules do not import other domain modules directly.** If domains need to share logic, extract it into a domain lib under `libs/` or use events/queues for communication.
+- **Domain modules do not import other domain modules directly.** If domains need to share logic, extract it into a domain lib under `src/libs/` or use events/queues for communication.
+- **Keep libs inside the app.** The `libs/` directory under `src/` is for cross-domain sharing within the monolith. Only promote to an Nx workspace library when multiple backend apps need the same code.
 - **Infrastructure modules are generic.** They should not contain business logic or reference specific domains.
 - **Tests are co-located.** Integration tests go in `__tests__/`. Unit tests for utils and pure functions can live alongside the implementation file. Do not create a top-level `test/` directory.
