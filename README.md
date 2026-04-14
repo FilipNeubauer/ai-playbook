@@ -6,98 +6,108 @@ Use it to **bootstrap new projects** with production-ready scaffolding, or **dro
 
 ## What's Inside
 
-| Stack | Rules | Skills |
-|-------|-------|--------|
-| **NestJS** — Backend API | Code rules, folder structure | Drizzle migration |
-| **Next.js** — Web frontend | Code rules, folder structure | — |
-| **React Native Expo** — Mobile | Folder structure | — |
-| **Shared** — Cross-stack | Naming, validation, error handling | Nx monorepo setup |
+| Directory | Contents |
+|-----------|----------|
+| `rules/` | Coding rules and folder structure conventions per stack |
+| `templates/` | Real skeleton source files (.ts/.tsx) used by the setup skill |
+| `skills/` | Claude Code slash commands that automate multi-step workflows |
 
-> **Rules** define how code should be written (conventions, patterns, architecture).
-> **Skills** are Claude Code slash commands that automate multi-step workflows.
+### Rules
 
-## Repository Structure
+| File | Scope |
+|------|-------|
+| `shared-rules.md` | Code clarity, naming, error handling — applies everywhere |
+| `nestjs-code-rules.md` | NestJS code conventions (validation, architecture, async) |
+| `nestjs-folder-structure-rules.md` | NestJS project structure (domains, infra, libs) |
+| `nextjs-code-rules.md` | Next.js code conventions (components, forms, state) |
+| `nextjs-folder-structure-rules.md` | Next.js project structure (features, app router) |
+| `react-native-folder-structure-rules.md` | React Native Expo project structure (screens, routing) |
+
+### Templates
 
 ```
-shared/
-  rules/            Shared rules (naming, validation, error handling)
-  skills/           Cross-stack skills (nx-monorepo-setup)
-nestjs/
-  rules/            NestJS code rules + folder structure
-  skills/           NestJS skills (drizzle-migration)
-nextjs/
-  rules/            Next.js code rules + folder structure
-  skills/
-react-native/
-  rules/            React Native Expo folder structure
-  skills/
+templates/
+├── nestjs/          NestJS skeleton files (main.ts, modules, services, controllers, resolvers)
+├── nextjs/          Next.js skeleton files (layouts, pages, features, api)
+├── react-native/    React Native Expo skeleton files (screens, navigation, tabs)
+└── shared-utils/    Shared utility library (validation, formatting)
 ```
 
-## Getting Started
+Template files use `__domain__`, `__Feature__`, `__project__` as placeholders that get replaced at setup time. Files marked `// [REST]` or `// [GQL]` are only included when that API style is selected.
 
-### Option 1: Start a new project (recommended)
+### Skills
 
-The **Nx monorepo setup** skill scaffolds a complete fullstack project — folder structures, shared libraries, coding rules, and skills — all wired up and ready to go.
+| Skill | Purpose |
+|-------|---------|
+| `nx-monorepo-setup.md` | Scaffold a fullstack Nx monorepo with selected stacks |
+| `drizzle-migration.md` | Generate Drizzle ORM migrations after schema changes |
 
-**Prerequisites:** [Node.js](https://nodejs.org/) >= 18, [pnpm](https://pnpm.io/), [Claude Code](https://docs.anthropic.com/en/docs/claude-code)
+## Installation
 
-1. **Clone this repo** (or download the skill file):
-   ```bash
-   git clone https://github.com/<your-org>/ai-playbook.git
-   ```
+```bash
+git clone https://github.com/<your-org>/ai-playbook.git
+cd ai-playbook
+./install.sh
+```
 
-2. **Install the skill** to your global Claude commands:
-   ```bash
-   mkdir -p ~/.claude/commands
-   cp ai-playbook/shared/skills/nx-monorepo-setup.md ~/.claude/commands/
-   ```
+This copies to:
+- `~/.claude/playbook/rules/` — all rule files
+- `~/.claude/playbook/templates/` — all template files
+- `~/.claude/commands/nx-monorepo-setup.md` — the setup skill
 
-3. **Create your project folder** and launch Claude Code:
+To update after pulling new changes, just run `./install.sh` again.
+
+## Usage
+
+### New project
+
+1. Create a folder and open Claude Code:
    ```bash
    mkdir my-project && cd my-project
    claude
    ```
 
-4. **Run the skill:**
+2. Run the skill:
    ```
    /nx-monorepo-setup
    ```
 
-The skill will walk you through an interactive wizard:
+3. Answer the interactive questions:
+   - **Project name** — kebab-case (e.g. `my-app`)
+   - **Stacks** — pick any combination of NestJS, Next.js, React Native Expo
+   - **API style** — REST or GraphQL
+   - **First domain** — name for the example domain/feature/screen
 
-- **Stack selection** — pick any combination of NestJS, Next.js, React Native Expo
-- **API style** — REST or GraphQL (adapts folder structure across all stacks)
-- **Drizzle ORM** — optional PostgreSQL database layer
-- **First domain** — scaffolds an example domain/feature/screen so the project isn't empty
+The skill reads rules from `~/.claude/playbook/rules/` and copies templates from `~/.claude/playbook/templates/` — always using the latest installed versions.
 
-What you get:
+**What you get:**
 - Nx monorepo with pnpm
-- Complete folder structures matching the playbook conventions
-- Shared libraries (types, utils, db, ui, api-client) based on your stack choices
-- `CLAUDE.md` files per app with the full coding rules — Claude automatically loads the right rules when working in each app
-- Relevant skills copied into `.claude/commands/`
+- Complete folder structures per stack
+- Shared utils library
+- `CLAUDE.md` per app with the relevant coding rules baked in
+- GraphQL codegen wired up (if GQL selected)
 
-### Option 2: Add rules to an existing project
+### Existing project
 
-If you already have a project and just want the coding rules and conventions:
+Copy the rules you need directly into your project's `CLAUDE.md` files:
 
-1. **Shared rules** — copy content from [`shared/rules/`](shared/rules/) into your project's root `CLAUDE.md`
-2. **Stack-specific rules** — copy from the relevant `<stack>/rules/` directory:
-   - [`nestjs/rules/`](nestjs/rules/) — NestJS code rules + folder structure
-   - [`nextjs/rules/`](nextjs/rules/) — Next.js code rules + folder structure
-   - [`react-native/rules/`](react-native/rules/) — React Native Expo folder structure
-3. **Skills** — copy from `<stack>/skills/` into your project's `.claude/commands/`:
+1. **Shared rules** — copy from [`rules/shared-rules.md`](rules/shared-rules.md) into your root `CLAUDE.md`
+2. **Stack rules** — copy the relevant files:
+   - [`rules/nestjs-code-rules.md`](rules/nestjs-code-rules.md) + [`rules/nestjs-folder-structure-rules.md`](rules/nestjs-folder-structure-rules.md)
+   - [`rules/nextjs-code-rules.md`](rules/nextjs-code-rules.md) + [`rules/nextjs-folder-structure-rules.md`](rules/nextjs-folder-structure-rules.md)
+   - [`rules/react-native-folder-structure-rules.md`](rules/react-native-folder-structure-rules.md)
+3. **Skills** — copy any relevant skills into your project's `.claude/commands/`:
    ```bash
    mkdir -p .claude/commands
-   cp ai-playbook/nestjs/skills/drizzle-migration.md .claude/commands/
+   cp ~/path/to/ai-playbook/skills/drizzle-migration.md .claude/commands/
    ```
 
-> **Tip:** For monorepos, use nested `CLAUDE.md` files — one per app directory. Claude Code automatically loads the nearest `CLAUDE.md`, so each app gets its own context-specific rules.
+> **Tip:** For monorepos, put shared rules in the root `CLAUDE.md` and stack-specific rules in each app's `CLAUDE.md`. Claude Code auto-loads the nearest one.
 
 ## Contributing
 
-To add new rules or skills:
+- **Rules** go in `rules/` as standalone markdown files — one file per concern
+- **Templates** go in `templates/<stack>/` as real source files with `__placeholder__` conventions
+- **Skills** go in `skills/` following the [Claude Code skill format](https://docs.anthropic.com/en/docs/claude-code)
 
-- **Rules** go in `<stack>/rules/` as markdown files covering a specific concern
-- **Skills** go in `<stack>/skills/` (or `shared/skills/` for cross-stack) following the [Claude Code skill format](https://docs.anthropic.com/en/docs/claude-code)
-- Keep rules concise and opinionated — the goal is clear guidance, not documentation
+After changes, run `./install.sh` to update your local installation.

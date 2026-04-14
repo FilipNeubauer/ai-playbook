@@ -1,0 +1,43 @@
+{
+	"compilerOptions": {
+		"target": "es2022",
+		"module": "esnext",
+		"lib": ["es2022"],
+		"moduleResolution": "bundler",
+		"isolatedModules": true,
+
+		"strict": true,
+		"alwaysStrict": true,
+		"strictNullChecks": true,
+		"noImplicitAny": true,
+		"noImplicitThis": true,
+
+		"noUncheckedIndexedAccess": true,
+		"noImplicitReturns": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true,
+		"allowUnreachableCode": false,
+		"useUnknownInCatchVariables": true,
+		"noImplicitOverride": true,
+
+		"allowJs": true,
+		"esModuleInterop": true,
+		"resolveJsonModule": true,
+
+		"skipLibCheck": true,
+		"removeComments": true,
+		"preserveConstEnums": true,
+		"forceConsistentCasingInFileNames": true,
+		"composite": true,
+		"declarationMap": true,
+		"sourceMap": true,
+		"importHelpers": true,
+		"noEmitOnError": true,
+		"emitDeclarationOnly": false,
+
+		"types": ["node"]
+	},
+	"include": ["**/*.ts", "**/*.mts"],
+	"exclude": ["node_modules", "out-tsc", "dist", "**/*.spec.ts", "**/*.e2e.ts", "**/*.test.ts"]
+}

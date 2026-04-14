@@ -1,0 +1,128 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.4.6/schema.json",
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"useIgnoreFile": true
+	},
+
+	"files": {
+		"ignoreUnknown": false,
+		"includes": [
+			"**",
+			"!.expo",
+			"!!dist",
+			"!!build",
+			"!!coverage",
+			"!!android",
+			"!!ios",
+			"!!.tamagui",
+			"!!.vscode",
+			"!!scripts",
+			"!!tamagui.config.ts",
+			"!!src/**/_layout.tsx"
+		]
+	},
+
+	"formatter": {
+		"enabled": true,
+		"indentWidth": 2,
+		"lineWidth": 120,
+		"indentStyle": "tab"
+	},
+
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"complexity": {
+				"useSimplifiedLogicExpression": {
+					"level": "warn",
+					"fix": "unsafe"
+				},
+				"noUselessFragments": "warn",
+				"noStaticOnlyClass": "warn"
+			},
+			"correctness": {
+				"useUniqueElementIds": "off"
+			},
+			"style": {
+				"useConst": {
+					"level": "on",
+					"fix": "unsafe"
+				},
+				"noJsxLiterals": {
+					"level": "error",
+					"options": {
+						"ignoreProps": true,
+						"noStrings": false,
+						"allowedStrings": [
+							" "
+						]
+					}
+				},
+				"useAtIndex": "on",
+				"useBlockStatements": {
+					"level": "error",
+					"fix": "unsafe"
+				},
+				"useCollapsedElseIf": {
+					"level": "warn",
+					"fix": "safe"
+				},
+				"useCollapsedIf": {
+					"level": "warn",
+					"fix": "safe"
+				},
+				"useNumericSeparators": "on",
+				"noNegationElse": {
+					"level": "warn",
+					"fix": "safe"
+				},
+				"noNestedTernary": {
+					"level": "warn"
+				},
+				"noUselessElse": {
+					"level": "warn",
+					"fix": "safe"
+				}
+			},
+			"nursery": {
+				"noShadow": "warn"
+			}
+		}
+	},
+
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "double",
+			"jsxQuoteStyle": "double",
+			"trailingCommas": "all",
+			"semicolons": "asNeeded",
+			"arrowParentheses": "always",
+			"operatorLinebreak": "after"
+		}
+	},
+
+	"json": {
+		"parser": {
+			"allowComments": true,
+			"allowTrailingCommas": false
+		},
+
+		"formatter": {
+			"indentStyle": "tab",
+			"indentWidth": 2,
+			"expand": "always"
+		}
+	},
+
+	"assist": {
+		"enabled": true,
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
+		}
+	}
+}
