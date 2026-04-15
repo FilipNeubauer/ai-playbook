@@ -1,5 +1,7 @@
 import { Module } from "@nestjs/common"
-import { APP_FILTER, APP_INTERCEPTOR } from "@nestjs/core"
+import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core"
+import { ZodValidationPipe } from "nestjs-zod"
+import { CommonModule } from "./libs/common/common.module"
 import { DrizzleModule } from "./libs/drizzle/drizzle.module"
 import { __Domain__Module } from "./domain/__domain__/__domain__.module"
 import { AuthModule } from "./infra/auth/auth.module"
@@ -13,6 +15,7 @@ import { LoggingInterceptor } from "./infra/interceptors/logging.interceptor"
 
 @Module({
 	imports: [
+		CommonModule,
 		DrizzleModule,
 		AuthModule,
 		BullmqModule,
@@ -23,6 +26,7 @@ import { LoggingInterceptor } from "./infra/interceptors/logging.interceptor"
 	],
 	controllers: [HealthcheckController],
 	providers: [
+		{ provide: APP_PIPE, useClass: ZodValidationPipe },
 		{ provide: APP_FILTER, useClass: HttpExceptionFilter },
 		{ provide: APP_INTERCEPTOR, useClass: LoggingInterceptor },
 	],

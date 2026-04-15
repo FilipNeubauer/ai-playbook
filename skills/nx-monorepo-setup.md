@@ -98,10 +98,10 @@ npx nx generate @nx/js:library shared-utils --directory=libs/shared/utils --buil
 pnpm add -D @biomejs/biome
 
 # NestJS (always when selected)
-cd apps/backend && pnpm add zod decimal.js semver drizzle-orm postgres @nestjs/bullmq bullmq && pnpm add -D @types/semver drizzle-kit && cd ../..
+cd apps/backend && pnpm add zod nestjs-zod decimal.js semver drizzle-orm postgres @nestjs/config @nestjs/jwt @nestjs/passport passport passport-jwt bcrypt @nestjs/bullmq bullmq && pnpm add -D @types/semver @types/passport-jwt @types/bcrypt drizzle-kit && cd ../..
 
 # NestJS + GraphQL
-cd apps/backend && pnpm add @nestjs/graphql @nestjs/apollo @apollo/server graphql && cd ../..
+cd apps/backend && pnpm add @nestjs/graphql @nestjs/apollo @apollo/server graphql dataloader && cd ../..
 
 # NestJS + REST
 cd apps/backend && pnpm add @nestjs/swagger && cd ../..
@@ -113,7 +113,7 @@ cd apps/web && pnpm add react-hook-form @hookform/resolvers zod nuqs && cd ../..
 cd apps/web && pnpm add @apollo/client graphql && pnpm add -D @graphql-codegen/cli @graphql-codegen/client-preset && cd ../..
 
 # React Native (always when selected)
-cd apps/mobile && pnpm add nativewind zod && cd ../..
+cd apps/mobile && pnpm add nativewind zod expo-font expo-splash-screen expo-secure-store react-native-keyboard-controller react-native-reanimated react-native-gesture-handler @gorhom/bottom-sheet && pnpm add -D tailwindcss && cd ../..
 
 # React Native + GraphQL
 cd apps/mobile && pnpm add @apollo/client graphql && pnpm add -D @graphql-codegen/cli @graphql-codegen/client-preset && cd ../..
@@ -172,6 +172,9 @@ Copy `~/.claude/playbook/templates/nestjs/` into `apps/backend/src/`:
 | `domain/__domain__.service.ts` | `apps/backend/src/app/domain/<domain>/services/<domain>.service.ts` |
 | `domain/__domain__.controller.ts` | `apps/backend/src/app/domain/<domain>/controllers/<domain>.controller.ts` |
 | `domain/__domain__.resolver.ts` | `apps/backend/src/app/domain/<domain>/resolvers/<domain>.resolver.ts` |
+| `domain/__domain__.input.ts` | `apps/backend/src/app/domain/<domain>/models/inputs/create-<domain>.input.ts` |
+| `domain/__domain__.output.ts` | `apps/backend/src/app/domain/<domain>/models/outputs/<domain>.output.ts` |
+| `domain/__domain__.dto.input.ts` | `apps/backend/src/app/domain/<domain>/dto/create-<domain>.input.dto.ts` |
 | `domain/__domain__.types.ts` | `apps/backend/src/app/domain/<domain>/types/<domain>.types.ts` |
 | `domain/__domain__.constants.ts` | `apps/backend/src/app/domain/<domain>/constants/<domain>.constants.ts` |
 | `domain/__domain__.utils.ts` | `apps/backend/src/app/domain/<domain>/utils/<domain>.utils.ts` |
@@ -179,20 +182,40 @@ Copy `~/.claude/playbook/templates/nestjs/` into `apps/backend/src/`:
 | `infra/healthcheck.controller.ts` | `apps/backend/src/app/infra/controllers/healthcheck.controller.ts` |
 | `infra/http-exception.filter.ts` | `apps/backend/src/app/infra/filters/http-exception.filter.ts` |
 | `infra/logging.interceptor.ts` | `apps/backend/src/app/infra/interceptors/logging.interceptor.ts` |
-| `infra/auth.module.ts` | `apps/backend/src/app/infra/auth/auth.module.ts` |
+| `infra/auth/auth.module.ts` | `apps/backend/src/app/infra/auth/auth.module.ts` |
+| `infra/auth/services/auth.service.ts` | `apps/backend/src/app/infra/auth/services/auth.service.ts` |
+| `infra/auth/controllers/auth.controller.ts` | `apps/backend/src/app/infra/auth/controllers/auth.controller.ts` |
+| `infra/auth/strategies/jwt.strategy.ts` | `apps/backend/src/app/infra/auth/strategies/jwt.strategy.ts` |
+| `infra/auth/guards/jwt-auth.guard.ts` | `apps/backend/src/app/infra/auth/guards/jwt-auth.guard.ts` |
+| `infra/auth/decorators/current-user.decorator.ts` | `apps/backend/src/app/infra/auth/decorators/current-user.decorator.ts` |
+| `infra/auth/types/auth.types.ts` | `apps/backend/src/app/infra/auth/types/auth.types.ts` |
+| `infra/auth/constants/auth.constants.ts` | `apps/backend/src/app/infra/auth/constants/auth.constants.ts` |
+| `infra/auth/resolvers/auth.resolver.ts` | `apps/backend/src/app/infra/auth/resolvers/auth.resolver.ts` |
+| `infra/auth/models/auth-token-pair.output.ts` | `apps/backend/src/app/infra/auth/models/auth-token-pair.output.ts` |
+| `infra/auth/models/login.input.ts` | `apps/backend/src/app/infra/auth/models/login.input.ts` |
 | `infra/bullmq.module.ts` | `apps/backend/src/app/infra/bullmq/bullmq.module.ts` |
 | `infra/graphql.module.ts` | `apps/backend/src/app/infra/graphql/graphql.module.ts` |
 | `infra/dataloader.module.ts` | `apps/backend/src/app/infra/dataloader/dataloader.module.ts` |
 | `infra/app-config/app-config.module.ts` | `apps/backend/src/app/infra/app-config/app-config.module.ts` |
-| `infra/app-config/app-config.service.ts` | `apps/backend/src/app/infra/app-config/app-config.service.ts` |
-| `infra/app-config/app-config.controller.ts` | `apps/backend/src/app/infra/app-config/app-config.controller.ts` |
+| `infra/app-config/services/app-config.service.ts` | `apps/backend/src/app/infra/app-config/services/app-config.service.ts` |
+| `infra/app-config/controllers/app-config.controller.ts` | `apps/backend/src/app/infra/app-config/controllers/app-config.controller.ts` |
 | `infra/app-config/types/app-config.types.ts` | `apps/backend/src/app/infra/app-config/types/app-config.types.ts` |
 | `infra/app-config/constants/app-config.constants.ts` | `apps/backend/src/app/infra/app-config/constants/app-config.constants.ts` |
+| `libs/common/common.module.ts` | `apps/backend/src/libs/common/common.module.ts` |
+| `libs/common/services/env-variable.service.ts` | `apps/backend/src/libs/common/services/env-variable.service.ts` |
+| `libs/common/constants/env-variable.constants.ts` | `apps/backend/src/libs/common/constants/env-variable.constants.ts` |
+| `libs/common/utils/create-gql-enum.ts` | `apps/backend/src/libs/common/utils/create-gql-enum.ts` |
+| `libs/common/utils/log-error.ts` | `apps/backend/src/libs/common/utils/log-error.ts` |
+| `libs/common/constants/zod-validation.constants.ts` | `apps/backend/src/libs/common/constants/zod-validation.constants.ts` |
+| `libs/common/decorators/zod-validation.decorator.ts` | `apps/backend/src/libs/common/decorators/zod-validation.decorator.ts` |
+| `libs/common/pipes/global-zod-validation.pipe.ts` | `apps/backend/src/libs/common/pipes/global-zod-validation.pipe.ts` |
+| `libs/common/factories/dataloader.factory.ts` | `apps/backend/src/libs/common/factories/dataloader.factory.ts` |
 | `libs/drizzle/drizzle.config.ts` | `apps/backend/drizzle.config.ts` |
 | `libs/drizzle/drizzle.module.ts` | `apps/backend/src/libs/drizzle/drizzle.module.ts` |
 | `libs/drizzle/services/drizzle.service.ts` | `apps/backend/src/libs/drizzle/services/drizzle.service.ts` |
 | `libs/drizzle/db/schemas/app-config.schema.ts` | `apps/backend/src/libs/drizzle/db/schemas/app-config.schema.ts` |
 | `libs/drizzle/db/schemas/__domain__.schema.ts` | `apps/backend/src/libs/drizzle/db/schemas/<domain>.schema.ts` |
+| `libs/drizzle/db/schemas/refresh-token.schema.ts` | `apps/backend/src/libs/drizzle/db/schemas/refresh-token.schema.ts` |
 | `libs/drizzle/db/migrations/.gitkeep` | `apps/backend/src/libs/drizzle/db/migrations/.gitkeep` |
 | `libs/drizzle/scripts/seed.ts` | `apps/backend/src/libs/drizzle/scripts/seed.ts` |
 | `libs/drizzle/utils/db-helpers.ts` | `apps/backend/src/libs/drizzle/utils/db-helpers.ts` |
@@ -236,6 +259,11 @@ Copy `~/.claude/playbook/templates/nextjs/` into `apps/web/src/`:
 | `layouts/PublicLayout.tsx` | `apps/web/src/layouts/PublicLayout.tsx` |
 | `i18n/en.json` | `apps/web/src/i18n/messages/en.json` |
 | `styles/globals.css` | `apps/web/src/styles/globals.css` |
+| `features/auth/hooks/use-auth.ts` | `apps/web/src/features/auth/hooks/use-auth.ts` |
+| `features/auth/components/LoginForm.tsx` | `apps/web/src/features/auth/components/LoginForm.tsx` |
+| `providers/AuthProvider.tsx` | `apps/web/src/providers/AuthProvider.tsx` |
+| `app/well-known-apple-app-site-association-route.ts` | `apps/web/src/app/.well-known/apple-app-site-association/route.ts` |
+| `app/well-known-assetlinks-route.ts` | `apps/web/src/app/.well-known/assetlinks.json/route.ts` |
 
 Also create empty directories with `.gitkeep`: `components/shadcn-ui/`, `components/custom/tables/`, `components/custom/modals/`, `components/custom/form-inputs/`, `components/custom/skeleton/`, `components/custom/empty-states/`, `hooks/`, `utils/`, `icons/`, `images/`, `api/auth/`.
 
@@ -270,6 +298,15 @@ Copy `~/.claude/playbook/templates/react-native/` into `apps/mobile/src/`:
 | `i18n/en.json` | `apps/mobile/src/i18n/messages/en.json` |
 | `styles/global.css` | `apps/mobile/src/styles/global.css` |
 | `app.config.ts` | `apps/mobile/app.config.ts` |
+| `tailwind.config.ts` | `apps/mobile/tailwind.config.ts` |
+| `metro.config.js` | `apps/mobile/metro.config.js` |
+| `babel.config.js` | `apps/mobile/babel.config.js` |
+| `nativewind-env.d.ts` | `apps/mobile/nativewind-env.d.ts` |
+| `assets/fonts/.gitkeep` | `apps/mobile/src/assets/fonts/.gitkeep` |
+| `features/auth/hooks/use-auth.ts` | `apps/mobile/src/features/auth/hooks/use-auth.ts` |
+| `features/auth/hooks/use-token-storage.ts` | `apps/mobile/src/features/auth/hooks/use-token-storage.ts` |
+| `features/auth/components/LoginForm.tsx` | `apps/mobile/src/features/auth/components/LoginForm.tsx` |
+| `providers/AuthProvider.tsx` | `apps/mobile/src/providers/AuthProvider.tsx` |
 | `features/force-update/components/ForceUpdateModal.tsx` | `apps/mobile/src/features/force-update/components/ForceUpdateModal.tsx` |
 | `features/force-update/hooks/use-version-check.ts` | `apps/mobile/src/features/force-update/hooks/use-version-check.ts` |
 | `providers/ForceUpdateProvider.tsx` | `apps/mobile/src/providers/ForceUpdateProvider.tsx` |
@@ -354,6 +391,9 @@ DATABASE_URL=postgresql://postgres:postgres@localhost:5432/__project__
 # Backend (if NestJS selected)
 PORT=3000
 NODE_ENV=development
+JWT_SECRET=change-me-to-a-random-secret
+JWT_ACCESS_EXPIRATION=15m
+JWT_REFRESH_EXPIRATION=7d
 
 # Frontend (if Next.js selected)
 NEXT_PUBLIC_API_URL=http://localhost:3000

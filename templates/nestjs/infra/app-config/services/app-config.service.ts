@@ -1,14 +1,14 @@
 import { Injectable, Logger } from "@nestjs/common"
 import { eq } from "drizzle-orm"
 import { lt, valid } from "semver"
-import { DrizzleService } from "../../libs/drizzle/services/drizzle.service"
-import { appConfigTable } from "../../libs/drizzle/db/schemas/app-config.schema"
+import { DrizzleService } from "../../../libs/drizzle/services/drizzle.service"
+import { appConfigTable } from "../../../libs/drizzle/db/schemas/app-config.schema"
 import {
 	AppConfigKey,
 	PLATFORM_STORE_URL_KEY,
 	PLATFORM_VERSION_KEY,
-} from "./constants/app-config.constants"
-import type { Platform, VersionCheckResponse } from "./types/app-config.types"
+} from "../constants/app-config.constants"
+import type { Platform, VersionCheckResponse } from "../types/app-config.types"
 
 @Injectable()
 export class AppConfigService {

@@ -1,9 +1,15 @@
-'use client';
+"use client"
+
+import { AuthProvider } from "@/providers/AuthProvider"
 
 type Props = {
-  children: React.ReactNode;
-};
+	children: React.ReactNode
+}
 
 export function Providers({ children }: Props) {
-  return <>{children}</>;
+	return (
+		<AuthProvider>
+			{children}
+		</AuthProvider>
+	)
 }

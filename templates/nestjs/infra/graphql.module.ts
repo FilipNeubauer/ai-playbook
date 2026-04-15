@@ -1,17 +1,18 @@
 // [GQL]
-import { Module } from '@nestjs/common';
-import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { join } from 'path';
+import { Module } from "@nestjs/common"
+import { GraphQLModule } from "@nestjs/graphql"
+import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo"
+import { join } from "path"
 
 @Module({
-  imports: [
-    GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), 'apps/backend/schema.graphql'),
-      sortSchema: true,
-      playground: process.env.NODE_ENV !== 'production',
-    }),
-  ],
+	imports: [
+		GraphQLModule.forRoot<ApolloDriverConfig>({
+			driver: ApolloDriver,
+			autoSchemaFile: join(process.cwd(), "apps/backend/schema.graphql"),
+			sortSchema: true,
+			playground: process.env.NODE_ENV !== "production",
+			context: ({ req, res }: { req: Request; res: Response }) => ({ req, res }),
+		}),
+	],
 })
 export class GraphqlModule {}

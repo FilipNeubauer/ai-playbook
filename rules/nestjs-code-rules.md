@@ -30,6 +30,12 @@
 - Prefer explicit `| undefined` over `?` for optional properties everywhere — types, interfaces, function parameters. Makes optionality visible and forces callers to explicitly pass `undefined`.
 - Prefer defensive guards over non-null assertions (`!`) — check and throw with a descriptive error.
 
+## Environment Variables
+
+- Never use `process.env` directly — always use `EnvVariableService` from `libs/common`.
+- Every env variable must be a value in the `EnvVariable` enum. Add new keys to the enum before using them.
+- Use `env.get(key)` when the variable is required (throws if missing). Use `env.getOptional(key)` when it may be absent.
+
 ## Architecture
 
 - Do not export services directly from domain modules — this creates tight coupling. Use shared "domain lib" modules under `src/libs/` for cross-domain logic.

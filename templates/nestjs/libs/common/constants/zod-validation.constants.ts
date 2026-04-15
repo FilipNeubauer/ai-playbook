@@ -1,0 +1,1 @@
+export const ZOD_VALIDATION = "ZOD_VALIDATION"
