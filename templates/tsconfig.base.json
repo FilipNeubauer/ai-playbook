@@ -21,6 +21,10 @@
 		"useUnknownInCatchVariables": true,
 		"noImplicitOverride": true,
 
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"strictPropertyInitialization": false,
+
 		"allowJs": true,
 		"esModuleInterop": true,
 		"resolveJsonModule": true,
